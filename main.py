@@ -6,66 +6,44 @@ from sp500EqualWeight import final_dataframe
 import time
 import requests
 import pandas as pd
-
+portfolio_size = 1000000
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 
-top_col1, top_col2 = st.beta_columns(2)
-with top_col1:
-    selected_algorithm = st.selectbox('Select Trading Algorithm', [
-        'Quantitative Momentum', 'Quantitative Value'])
-with top_col2:
-    portfolio_size = st.number_input('Enter Portfolio Size')
+selected_algorithm = st.selectbox('Select Trading Algorithm', [
+                                  'Quantitative Momentum', 'Quantitative Value'])
 
 start = st.button('Start Trading Simulation')
 
-if start and portfolio_size:
-    st.subheader("Top 10 Stocks to Buy")
-    st.write(final_dataframe)
+if start:
+    st.subheader("Top Ranked Stocks")
+    if selected_algorithm == 'Quantitative Momentum':
+        st.write(hqm_dataframe_results)
+    # else
+    #     st.write(value_dataframe_results)
 
 
-st.subheader("Trading Results")
-fake_results = np.random.randn(10, 1)
-if start and portfolio_size:
-    st.line_chart(fake_results)
-elif start and portfolio_size == 0:
-    st.error('Enter Portfolio Size')
-elif start == False:
-    st.info('Please choose trading algorithm and enter Portfolio size')
-
-
-def updated_price():
+def updated_results():
     owned_stock_prices = 0
     latest_price = 0
-    for i in range(1, 10):
+    for i in range(0, 9):
         api_url = f'https://sandbox.iexapis.com/stable/stock/{stock_bought[i]}/quote/?token={IEX_CLOUD_API_TOKEN}'
         data = requests.get(api_url).json()
         latest_price = int(data['latestPrice'])
-        owned_stock_prices += latest_price * num_of_stocks[i]
-    return owned_stock_prices - total_money_spent
+        owned_stock_prices += (latest_price * num_of_stocks[i])
+    return (owned_stock_prices - total_money_spent)
 
 
-gains = updated_price()
-prices_array = np.array([gains])
-
-# chart_data = pd.DataFrame(
-#     prices_array,
-#     columns=['Gains'])
-
-result_chart = st.line_chart(prices_array)
-
-for i in range(1, 10):
-    new_rows = prices_array.append(updated_price())
-    result_chart.add_rows(new_rows)
-    prices_array = new_rows
-    time.sleep(5)
-
-
-# first_row = {'Profit/Loss': [gains]}
-# chart_data = pd.DataFrame(data=first_row)
-# result_chart = st.line_chart(chart_data)
-
-# for i in range(1, 10):
-#     new_rows = chart_data + {'Profit/Loss': [updated_price()]}
-#     result_chart.add_rows(new_rows)
-#     chart_data = new_rows
-#     time.sleep(15)
+st.subheader("Algorithm Real-Time Results")
+if start and selected_algorithm == 'Quantitative Momentum':
+    gains = updated_results()
+    prices_array = np.array([gains])
+    result_chart = st.line_chart(prices_array)
+    for i in range(0, 20):
+        new_rows = np.append(prices_array, updated_results())
+        result_chart.add_rows(new_rows)
+        prices_array = new_rows
+        time.sleep(5)
+elif start == False:
+    st.info('Please choose trading algorithm and enter Portfolio size')
+# elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
+    # value_algo
