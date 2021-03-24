@@ -10,5 +10,4 @@ for i in range(0, 10):
     stock_bought.append(hqm_dataframe_results.loc[i, 'Ticker'])
     num_of_stocks.append(
         hqm_dataframe_results.loc[i, 'Number of Shares Bought'])
-    if hqm_dataframe_results.loc[i, 'Total Price'] != 'N/A':
-        total_money_spent += int(hqm_dataframe_results.loc[i, 'Total Price'])
+    total_money_spent += int(hqm_dataframe_results.loc[i, 'Total Price'])
