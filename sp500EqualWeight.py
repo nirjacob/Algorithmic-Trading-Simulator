@@ -8,7 +8,7 @@ import streamlit as st
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 # from secrets import IEX_CLOUD_API_TOKEN
 stocks = pd.read_csv(
-    'file:///C:/Users/Nir/Desktop/TradingAlgProject/BotOfWallStreet-1/sp_500_stocks.csv')
+    'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')
 symbol = 'AAPL'
 
 # VV this is an f string(the {symbol} replaced by the var synbol)
