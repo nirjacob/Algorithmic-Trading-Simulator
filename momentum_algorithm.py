@@ -26,6 +26,7 @@ hqm_columns = [
     'Ticker',
     'Price',
     'Number of Shares to Buy',
+    'Total Price',
     'One-Year Price Return',
     'One-Year Return Percentile',
     'Six-Month Price Return',
@@ -45,6 +46,7 @@ for symbol_string in symbol_strings:
         hqm_dataframe = hqm_dataframe.append(
             pd.Series([symbol,
                        data[symbol]['quote']['latestPrice'],
+                       'N/A',
                        'N/A',
                        data[symbol]['stats']['year1ChangePercent'],
                        'N/A',
@@ -86,21 +88,17 @@ for row in hqm_dataframe.index:
     hqm_dataframe.loc[row, 'HQM Score'] = mean(momentum_percentiles)
 
 hqm_dataframe.sort_values(by='HQM Score', ascending=False, inplace=True)
-hqm_dataframe = hqm_dataframe[:10]
+hqm_dataframe = hqm_dataframe[:11]
 hqm_dataframe.reset_index(inplace=True, drop=True)
 position_size = portfolio_size / len(hqm_dataframe.index)
 for i in range(0, len(hqm_dataframe['Ticker'])-1):
     hqm_dataframe.loc[i,
-                      'Number of Shares to Buy'] = position_size // hqm_dataframe['Price'][i]
-# for i in range(0, len(hqm_dataframe['Ticker'])-1):
-hqm_dataframe['Total Price'] = float(
-    hqm_dataframe['Number of Shares to Buy']) * float(hqm_dataframe['Price'])
+                      'Number of Shares to Buy'] = float(position_size // hqm_dataframe['Price'][i])
+    hqm_dataframe.loc[i,
+                      'Total Price'] = (hqm_dataframe.loc[i, 'Number of Shares to Buy']) * (hqm_dataframe['Price'][i])
 
-hqm_dataframe = hqm_dataframe[[
-    'Ticker', 'Price', 'Number of Shares to Buy', 'HQM Score']]
 
 hqm_dataframe['Number of Shares Bought'] = hqm_dataframe['Number of Shares to Buy']
-
 
 hqm_dataframe_results = hqm_dataframe[[
     'Ticker', 'Price', 'Number of Shares Bought', 'Total Price']]
