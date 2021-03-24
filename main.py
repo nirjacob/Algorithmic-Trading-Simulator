@@ -23,3 +23,18 @@ elif start and portfolio_size == 0:
     st.error('Enter Portfolio Size')
 elif start == False:
     st.info('Please choose trading algorithm and enter Portfolio size')
+
+
+api_url = f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote/?token={IEX_CLOUD_API_TOKEN}'
+updated_price = requests.get(api_url).json()
+stock_price = data['latestPrice']
+
+
+last_rows = np.random.randn(1, 1)
+chart = st.line_chart(last_rows)
+
+for i in range(1, 101):
+    new_rows = last_rows[-1, :] + np.random.randn(5, 1).cumsum(axis=0)
+    chart.add_rows(new_rows)
+    last_rows = new_rows
+    time.sleep(0.5)

@@ -5,7 +5,7 @@ import pandas as pd  # The Pandas data science library
 import requests  # The requests library for HTTP requests in Python
 import xlsxwriter  # The XlsxWriter libarary for
 import math  # The Python math module
-from scipy import stats  # The SciPy stats module
+from scipy.stats import percentileofscore as score
 stocks = pd.read_csv(
     'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
@@ -21,34 +21,6 @@ symbol_groups = list(chunks(stocks['Ticker'], 100))
 symbol_strings = []
 for i in range(0, len(symbol_groups)):
     symbol_strings.append(','.join(symbol_groups[i]))
-
-my_columns = ['Ticker', 'Price',
-              'One-Year Price Return', 'Number of Shares to Buy']
-
-final_dataframe = pd.DataFrame(columns=my_columns)
-
-for symbol_string in symbol_strings:
-    batch_api_call_url = f'https://sandbox.iexapis.com/stable/stock/market/batch/?types=stats,quote&symbols={symbol_string}&token={IEX_CLOUD_API_TOKEN}'
-    data = requests.get(batch_api_call_url).json()
-    for symbol in symbol_string.split(','):
-        final_dataframe = final_dataframe.append(
-            pd.Series([symbol,
-                       data[symbol]['quote']['latestPrice'],
-                       data[symbol]['stats']['year1ChangePercent'],
-                       'N/A'
-                       ],
-                      index=my_columns),
-            ignore_index=True)
-final_dataframe.sort_values('One-Year Price Return',
-                            ascending=False, inplace=True)
-final_dataframe = final_dataframe[:11]
-final_dataframe.reset_index(drop=True, inplace=True)
-
-position_size = portfolio_size / len(final_dataframe.index)
-for i in range(0, len(final_dataframe['Ticker'])):
-    final_dataframe.loc[i,
-                        'Number of Shares to Buy'] = position_size // final_dataframe['Price'][i]
-
 
 hqm_columns = [
     'Ticker',
@@ -66,7 +38,6 @@ hqm_columns = [
 ]
 
 hqm_dataframe = pd.DataFrame(columns=hqm_columns)
-
 for symbol_string in symbol_strings:
     batch_api_call_url = f'https://sandbox.iexapis.com/stable/stock/market/batch/?types=stats,quote&symbols={symbol_string}&token={IEX_CLOUD_API_TOKEN}'
     data = requests.get(batch_api_call_url).json()
@@ -94,16 +65,18 @@ time_periods = [
     'Three-Month',
     'One-Month'
 ]
+# zero out the data frame so "percentile of score" function can calculate values properly
+for row in hqm_dataframe.index:
+    for time_period in time_periods:
+        if hqm_dataframe.loc[row, f'{time_period} Price Return'] == None:
+            hqm_dataframe.loc[row, f'{time_period} Price Return'] = 0
 
 for row in hqm_dataframe.index:
     for time_period in time_periods:
-        hqm_dataframe.loc[row, f'{time_period} Return Percentile'] = stats.percentileofscore(
-            hqm_dataframe[f'{time_period} Price Return'], hqm_dataframe.loc[row, f'{time_period} Price Return'])/100
-
-# Print each percentile score to make sure it was calculated properly
-for time_period in time_periods:
-    print(hqm_dataframe[f'{time_period} Return Percentile'])
-
+        change_col = f'{time_period} Price Return'
+        percentile_col = f'{time_period} Return Percentile'
+        hqm_dataframe.loc[row, percentile_col] = score(
+            hqm_dataframe[change_col], hqm_dataframe.loc[row, change_col])
 
 for row in hqm_dataframe.index:
     momentum_percentiles = []
@@ -112,10 +85,22 @@ for row in hqm_dataframe.index:
             hqm_dataframe.loc[row, f'{time_period} Return Percentile'])
     hqm_dataframe.loc[row, 'HQM Score'] = mean(momentum_percentiles)
 
-hqm_dataframe.sort_values(by='HQM Score', ascending=False)
-hqm_dataframe = hqm_dataframe[:51]
-
-position_size = float(portfolio_size) / len(hqm_dataframe.index)
+hqm_dataframe.sort_values(by='HQM Score', ascending=False, inplace=True)
+hqm_dataframe = hqm_dataframe[:10]
+hqm_dataframe.reset_index(inplace=True, drop=True)
+position_size = portfolio_size / len(hqm_dataframe.index)
 for i in range(0, len(hqm_dataframe['Ticker'])-1):
-    hqm_dataframe.loc[i, 'Number of Shares to Buy'] = math.floor(
-        position_size / hqm_dataframe['Price'][i])
+    hqm_dataframe.loc[i,
+                      'Number of Shares to Buy'] = position_size // hqm_dataframe['Price'][i]
+# for i in range(0, len(hqm_dataframe['Ticker'])-1):
+hqm_dataframe['Total Price'] = float(
+    hqm_dataframe['Number of Shares to Buy']) * float(hqm_dataframe['Price'])
+
+hqm_dataframe = hqm_dataframe[[
+    'Ticker', 'Price', 'Number of Shares to Buy', 'HQM Score']]
+
+hqm_dataframe['Number of Shares Bought'] = hqm_dataframe['Number of Shares to Buy']
+
+
+hqm_dataframe_results = hqm_dataframe[[
+    'Ticker', 'Price', 'Number of Shares Bought', 'Total Price']]
