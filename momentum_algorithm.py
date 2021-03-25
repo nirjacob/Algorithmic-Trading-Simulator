@@ -7,7 +7,7 @@ from scipy.stats import percentileofscore as score
 stocks = pd.read_csv(
     'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
-portfolio_size = 1000000
+portfolio_size = 100000
 
 
 def chunks(lst, n):
@@ -86,7 +86,7 @@ for row in hqm_dataframe.index:
     hqm_dataframe.loc[row, 'HQM Score'] = mean(momentum_percentiles)
 
 hqm_dataframe.sort_values(by='HQM Score', ascending=False, inplace=True)
-hqm_dataframe = hqm_dataframe[:10]
+hqm_dataframe = hqm_dataframe[:11]
 hqm_dataframe.reset_index(inplace=True, drop=True)
 position_size = portfolio_size / len(hqm_dataframe.index)
 for i in range(0, 9):

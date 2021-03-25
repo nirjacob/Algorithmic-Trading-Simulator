@@ -13,7 +13,6 @@ portfolio_size = 100000
 
 
 def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
@@ -22,54 +21,6 @@ symbol_groups = list(chunks(stocks['Ticker'], 100))
 symbol_strings = []
 for i in range(0, len(symbol_groups)):
     symbol_strings.append(','.join(symbol_groups[i]))
-
-my_columns = ['Ticker', 'Price',
-              'Price-to-Earnings Ratio', 'Number of Shares to Buy']
-
-final_dataframe = pd.DataFrame(columns=my_columns)
-
-for symbol_string in symbol_strings:
-    batch_api_call_url = f'https://sandbox.iexapis.com/stable/stock/market/batch/?types=quote&symbols={symbol_string}&token={IEX_CLOUD_API_TOKEN}'
-    data = requests.get(batch_api_call_url).json()
-    for symbol in symbol_string.split(','):
-        final_dataframe = final_dataframe.append(
-            pd.Series([symbol,
-                       data[symbol]['quote']['latestPrice'],
-                       data[symbol]['quote']['peRatio'],
-                       'N/A'
-                       ],
-                      index=my_columns),
-            ignore_index=True)
-final_dataframe.sort_values('Price-to-Earnings Ratio', inplace=True)
-final_dataframe = final_dataframe[final_dataframe['Price-to-Earnings Ratio'] > 0]
-final_dataframe = final_dataframe[:50]
-final_dataframe.reset_index(inplace=True)
-final_dataframe.drop('index', axis=1, inplace=True)
-for i in range(0, len(final_dataframe['Ticker'])):
-    final_dataframe.loc[i, 'Number of Shares to Buy'] = math.floor(
-        position_size / final_dataframe['Price'][i])
-
-symbol = 'AAPL'
-batch_api_call_url = f'https://sandbox.iexapis.com/stable/stock/market/batch/?types=advanced-stats,quote&symbols={symbol}&token={IEX_CLOUD_API_TOKEN}'
-data = requests.get(batch_api_call_url).json()
-
-# P/E Ratio
-pe_ratio = data[symbol]['quote']['peRatio']
-
-# P/B Ratio
-pb_ratio = data[symbol]['advanced-stats']['priceToBook']
-
-# P/S Ratio
-ps_ratio = data[symbol]['advanced-stats']['priceToSales']
-
-# EV/EBITDA
-enterprise_value = data[symbol]['advanced-stats']['enterpriseValue']
-ebitda = data[symbol]['advanced-stats']['EBITDA']
-ev_to_ebitda = enterprise_value/ebitda
-
-# EV/GP
-gross_profit = data[symbol]['advanced-stats']['grossProfit']
-ev_to_gross_profit = enterprise_value/gross_profit
 
 rv_columns = [
     'Ticker',
@@ -146,19 +97,22 @@ for row in rv_dataframe.index:
         rv_dataframe.loc[row, metrics[metric]] = stats.percentileofscore(
             rv_dataframe[metric], rv_dataframe.loc[row, metric])/100
 
-# Print each percentile score to make sure it was calculated properly
-for metric in metrics.values():
-    print(rv_dataframe[metric])
-
 for row in rv_dataframe.index:
     value_percentiles = []
     for metric in metrics.keys():
         value_percentiles.append(rv_dataframe.loc[row, metrics[metric]])
     rv_dataframe.loc[row, 'RV Score'] = mean(value_percentiles)
 rv_dataframe.sort_values(by='RV Score', inplace=True)
-rv_dataframe = rv_dataframe[:50]
+rv_dataframe = rv_dataframe[:11]
 rv_dataframe.reset_index(drop=True, inplace=True)
 position_size = float(portfolio_size) / len(rv_dataframe.index)
-for i in range(0, len(rv_dataframe['Ticker'])-1):
-    rv_dataframe.loc[i, 'Number of Shares to Buy'] = math.floor(
-        position_size / rv_dataframe['Price'][i])
+for i in range(0, 9):
+    rv_dataframe.loc[i, 'Number of Shares to Buy'] = int(
+        position_size // rv_dataframe['Price'][i])
+    rv_dataframe.loc[i, 'Total Price'] = int(
+        (rv_dataframe.loc[i, 'Number of Shares to Buy']) * (rv_dataframe['Price'][i]))
+
+rv_dataframe['Number of Shares Bought'] = rv_dataframe['Number of Shares to Buy']
+
+rv_dataframe_results = rv_dataframe[[
+    'Ticker', 'RV Score', 'Number of Shares Bought', 'Price', 'Total Price']]
