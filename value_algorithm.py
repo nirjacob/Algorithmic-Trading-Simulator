@@ -7,8 +7,7 @@ from scipy.stats import percentileofscore
 
 from scipy import stats
 
-stocks = pd.read_csv(
-    'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')
+stocks = pd.read_csv('/app/botofwallstreet/sp_500_stocks.csv')
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 portfolio_size = 100000
 
