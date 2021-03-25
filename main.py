@@ -7,6 +7,9 @@ import numpy as np
 import time
 import requests
 import pandas as pd
+import sys
+sys.path.insert(1, '/app/botofwallstreet/')
+
 portfolio_size = 100000
 start = False
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'

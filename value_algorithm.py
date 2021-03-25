@@ -2,7 +2,6 @@ from statistics import mean
 import numpy as np
 import pandas as pd
 import requests
-import xlsxwriter
 import math
 from scipy import stats
 
