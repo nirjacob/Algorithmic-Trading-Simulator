@@ -1,6 +1,6 @@
 
 
-*Trading Frequency Strategy:*
+_Trading Frequency Strategy:_
 Calculate and excute trades every 5 seconds, way too slow for high frequency traders to notice,
 way to fast for day traders to keep up.
 
