@@ -1,8 +1,8 @@
 from statistics import mean
-import numpy as np  # The Numpy numerical computing library
-import pandas as pd  # The Pandas data science library
-import requests  # The requests library for HTTP requests in Python
-import math  # The Python math module
+import numpy as np
+import pandas as pd
+import requests
+import math
 from scipy.stats import percentileofscore as score
 stocks = pd.read_csv(
     'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')

@@ -4,7 +4,6 @@ from momentum_algorithm import hqm_dataframe_results
 from momentum_result_tracker import stock_bought, num_of_stocks, total_money_spent
 import streamlit as st
 import numpy as np
-from sp500EqualWeight import final_dataframe
 import time
 import requests
 import pandas as pd
