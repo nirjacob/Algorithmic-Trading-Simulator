@@ -2,6 +2,8 @@ from value_algorithm import rv_dataframe_results
 import streamlit as st
 import time
 import numpy as np
+import sys
+sys.path.insert(1, '/app/botofwallstreet/')
 
 stock_bought_value = []
 total_money_spent_value = 0

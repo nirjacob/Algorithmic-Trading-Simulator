@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import requests
 import math
+import scipy
 from scipy import stats
 
 stocks = pd.read_csv(
