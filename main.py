@@ -7,8 +7,6 @@ import numpy as np
 import time
 import requests
 import pandas as pd
-import sys
-sys.path.insert(1, '/app/botofwallstreet/')
 
 portfolio_size = 100000
 start = False
