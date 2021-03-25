@@ -86,10 +86,10 @@ for row in hqm_dataframe.index:
     hqm_dataframe.loc[row, 'HQM Score'] = mean(momentum_percentiles)
 
 hqm_dataframe.sort_values(by='HQM Score', ascending=False, inplace=True)
-hqm_dataframe = hqm_dataframe[:11]
+hqm_dataframe = hqm_dataframe[:10]
 hqm_dataframe.reset_index(inplace=True, drop=True)
 position_size = portfolio_size / len(hqm_dataframe.index)
-for i in range(0, 9):
+for i in range(0, 10):
     hqm_dataframe.loc[i,
                       'Number of Shares to Buy'] = int(position_size // hqm_dataframe['Price'][i])
     hqm_dataframe.loc[i,

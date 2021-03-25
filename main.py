@@ -9,6 +9,8 @@ import time
 import requests
 import pandas as pd
 portfolio_size = 100000
+total_value = total_money_spent_value
+total_momentum = total_money_spent
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 
 selected_algorithm = st.selectbox('Select Trading Algorithm', [
@@ -20,14 +22,14 @@ if start:
     st.subheader("Top Ranked Stocks")
     if selected_algorithm == 'Quantitative Momentum':
         st.write(hqm_dataframe_results)
-    # else
-    #     st.write(value_dataframe_results)
+    else:
+        st.write(rv_dataframe_results)
 
 
 def updated_results():
     owned_stock_prices = 0
     latest_price = 0
-    for i in range(0, 9):
+    for i in range(0, 10):
         if selected_algorithm == 'Quantitative Momentum':
             api_url = f'https://sandbox.iexapis.com/stable/stock/{stock_bought[i]}/quote/?token={IEX_CLOUD_API_TOKEN}'
             data = requests.get(api_url).json()

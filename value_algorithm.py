@@ -1,10 +1,10 @@
 from statistics import mean
-import numpy as np  # The Numpy numerical computing library
-import pandas as pd  # The Pandas data science library
-import requests  # The requests library for HTTP requests in Python
-import xlsxwriter  # The XlsxWriter libarary for
-import math  # The Python math module
-from scipy import stats  # The SciPy stats module
+import numpy as np
+import pandas as pd
+import requests
+import xlsxwriter
+import math
+from scipy import stats
 
 stocks = pd.read_csv(
     'file:///C:/Users/Nir/Desktop/TradingAlgProject/RealBot/sp_500_stocks.csv')
@@ -102,11 +102,11 @@ for row in rv_dataframe.index:
     for metric in metrics.keys():
         value_percentiles.append(rv_dataframe.loc[row, metrics[metric]])
     rv_dataframe.loc[row, 'RV Score'] = mean(value_percentiles)
-rv_dataframe.sort_values(by='RV Score', inplace=True)
-rv_dataframe = rv_dataframe[:11]
+rv_dataframe.sort_values(by='RV Score', ascending=False, inplace=True)
+rv_dataframe = rv_dataframe[:10]
 rv_dataframe.reset_index(drop=True, inplace=True)
-position_size = float(portfolio_size) / len(rv_dataframe.index)
-for i in range(0, 9):
+position_size = (portfolio_size) / len(rv_dataframe.index)
+for i in range(0, 10):
     rv_dataframe.loc[i, 'Number of Shares to Buy'] = int(
         position_size // rv_dataframe['Price'][i])
     rv_dataframe.loc[i, 'Total Price'] = int(
