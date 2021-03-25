@@ -9,8 +9,6 @@ import time
 import requests
 import pandas as pd
 portfolio_size = 100000
-total_value = total_money_spent_value
-total_momentum = total_money_spent
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 
 selected_algorithm = st.selectbox('Select Trading Algorithm', [
@@ -19,49 +17,49 @@ selected_algorithm = st.selectbox('Select Trading Algorithm', [
 start = st.button('Start Trading Simulation')
 
 if start:
-    st.subheader("Top Ranked Stocks")
+    st.header("Top Ranked Stocks")
     if selected_algorithm == 'Quantitative Momentum':
         st.write(hqm_dataframe_results)
     else:
         st.write(rv_dataframe_results)
 
 
-def updated_results():
+def updated_results(shares_ammount, shares_bought, total_investment):
     owned_stock_prices = 0
     latest_price = 0
     for i in range(0, 10):
-        if selected_algorithm == 'Quantitative Momentum':
-            api_url = f'https://sandbox.iexapis.com/stable/stock/{stock_bought[i]}/quote/?token={IEX_CLOUD_API_TOKEN}'
-            data = requests.get(api_url).json()
-            latest_price = int(data['latestPrice'])
-            owned_stock_prices += (latest_price * num_of_stocks[i])
-            return (owned_stock_prices - total_money_spent)
-        else:
-            api_url = f'https://sandbox.iexapis.com/stable/stock/{stock_bought_value[i]}/quote/?token={IEX_CLOUD_API_TOKEN}'
-            data = requests.get(api_url).json()
-            latest_price = int(data['latestPrice'])
-            owned_stock_prices += (latest_price * num_of_stocks_value[i])
-            return (owned_stock_prices - total_money_spent_value)
+        api_url = f'https://sandbox.iexapis.com/stable/stock/{shares_bought[i]}/quote/?token={IEX_CLOUD_API_TOKEN}'
+        data = requests.get(api_url).json()
+        latest_price = int(data['latestPrice'])
+        owned_stock_prices += (latest_price * shares_ammount[i])
+    return (owned_stock_prices - total_investment)
 
 
-st.subheader("Algorithm Real-Time Results")
+st.header("Algorithm Real-Time Results")
 if start and selected_algorithm == 'Quantitative Momentum':
-    gains = updated_results()
+    gains = updated_results(num_of_stocks, stock_bought, total_money_spent)
     prices_array = np.array([gains])
-    result_chart = st.line_chart(prices_array)
-    for i in range(0, 20):
-        new_rows = np.append(prices_array, updated_results())
+    with st.beta_container():
+        result_chart = st.line_chart(prices_array)
+        st.subheader("Ticks(Every 30 secounds)")
+    for i in range(0, 30):
+        new_rows = np.append(prices_array, updated_results(
+            num_of_stocks, stock_bought, total_money_spent))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(5)
+        time.sleep(15)
 elif start == False:
-    st.info('Please choose trading algorithm and enter Portfolio size')
+    st.info('Please choose trading algorithm')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
-    gains = updated_results()
+    gains = updated_results(num_of_stocks_value,
+                            stock_bought_value, total_money_spent_value)
     prices_array = np.array([gains])
-    result_chart = st.line_chart(prices_array)
-    for i in range(0, 20):
-        new_rows = np.append(prices_array, updated_results())
+    with st.beta_container():
+        result_chart = st.line_chart(prices_array)
+        st.subheader("Ticks(Every 30 secounds)")
+    for i in range(0, 30):
+        new_rows = np.append(prices_array, updated_results(
+            num_of_stocks_value, stock_bought_value, total_money_spent_value))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(5)
+        time.sleep(15)
