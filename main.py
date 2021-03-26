@@ -32,7 +32,7 @@ if start:
     else:
         st.write(rv_dataframe_results)
 
-global flag = False
+flag = False
 
 
 def updated_results(shares_ammount, shares_bought, total_investment):
@@ -43,10 +43,7 @@ def updated_results(shares_ammount, shares_bought, total_investment):
         data = requests.get(api_url).json()
         latest_price = int(data['latestPrice'])
         owned_stock_prices += (latest_price * shares_ammount[i])
-    if (owned_stock_prices - total_investment) > 0 and flag = False:
-        st.balloons()
-        st.success('Congratulation! You Have Beaten The Market!')
-        flag = True
+
     return (owned_stock_prices - total_investment)
 
 
@@ -66,6 +63,10 @@ if start and selected_algorithm == 'Quantitative Momentum':
         time.sleep(0.5)
         balance_placeholder.empty()
         balance_placeholder.write(f"Previous recorded balance: {new_rows[i]}💲")
+        if (new_rows[i]) > 0 and flag == False:
+            st.balloons()
+            st.success('Congratulation! You Have Beaten The Market!')
+            flag = True
 elif start == False:
     st.info('Please choose trading algorithm and start the simulation')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
@@ -84,5 +85,9 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
         time.sleep(0.5)
         balance_placeholder.empty()
         balance_placeholder.write(f"Previous recorded balance: {new_rows[i]}💲")
+        if (new_rows[i]) > 0 and flag == False:
+            st.balloons()
+            st.success('Congratulation! You Have Beaten The Market!')
+            flag = True
 
 st.info('For more info on this app, see readme file at https://github.com/nirjacob/BotOfWallStreet')
