@@ -32,6 +32,8 @@ if start:
     else:
         st.write(rv_dataframe_results)
 
+flag = False
+
 
 def updated_results(shares_ammount, shares_bought, total_investment):
     owned_stock_prices = 0
@@ -41,9 +43,10 @@ def updated_results(shares_ammount, shares_bought, total_investment):
         data = requests.get(api_url).json()
         latest_price = int(data['latestPrice'])
         owned_stock_prices += (latest_price * shares_ammount[i])
-    if (owned_stock_prices - total_investment) > 0:
+    if (owned_stock_prices - total_investment) > 0 and flag = False:
         st.balloons()
         st.success('Congratulation! You Have Beaten The Market!')
+        flag = True
     return (owned_stock_prices - total_investment)
 
 
@@ -53,7 +56,7 @@ if start and selected_algorithm == 'Quantitative Momentum':
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss (Ticks Every 5 seconds)")
+        st.write("Profit/Loss (Ticks Every 2 seconds)")
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
@@ -62,16 +65,16 @@ if start and selected_algorithm == 'Quantitative Momentum':
         prices_array = new_rows
         time.sleep(0.5)
         balance_placeholder.empty()
-        balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
+        balance_placeholder.write(f"Previous recorded balance: {new_rows[i]}💲")
 elif start == False:
-    st.info('Please choose trading algorithm')
+    st.info('Please choose trading algorithm and start the simulation')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
     gains = updated_results(num_of_stocks_value,
                             stock_bought_value, total_money_spent_value)
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss (Ticks Every 5 seconds)")
+        st.write("Profit/Loss (Ticks Every 2 seconds)")
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
@@ -80,6 +83,6 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
         prices_array = new_rows
         time.sleep(0.5)
         balance_placeholder.empty()
-        balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
+        balance_placeholder.write(f"Previous recorded balance: {new_rows[i]}💲")
 
 st.info('For more info on this app, see readme file at https://github.com/nirjacob/BotOfWallStreet')
