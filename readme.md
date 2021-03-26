@@ -18,7 +18,7 @@
  ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/none.jpg)
 
 - ## :bulb: Conclusions
-- ### After researching for this project, as I suspected, beating the market is extremly hard!
+- ### As I firmly suspected, beating the market is extremly hard!
   ![😢:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/lose.jpg)
 - ### Nevertheless ill always remember the time I did
   ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/win.jpg)
