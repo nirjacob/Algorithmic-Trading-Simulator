@@ -1,6 +1,7 @@
 
-
-_Trading Frequency Strategy:_
+<a href="https://share.streamlit.io/nirjacob/botofwallstreet/main.py" target='_blank' > <h1>:chart_with_upwards_trend:	Try Here</h1></a>
+<br>
+Trading Frequency Strategy:
 Calculate and excute trades every 5 seconds, way too slow for high frequency traders to notice,
 way to fast for day traders to keep up.
 
