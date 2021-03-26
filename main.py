@@ -13,15 +13,10 @@ start = False
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 
 title_placeholder = st.empty()
-title_placeholder.text("Welcome to my trading algorithm simulation!")
+title_placeholder.header("Welcome to my trading algorithm simulation!")
 placeholder = st.empty()
 placeholder.text(
     "There are two algorithm profiles - momentum and value based.\nThe default portfolio size is set to 100,000$")
-
-
-if start == True:
-    placeholder.empty()
-    title_placeholder.empty()
 
 
 selected_algorithm = st.selectbox('Select Trading Algorithm', [
@@ -29,7 +24,8 @@ selected_algorithm = st.selectbox('Select Trading Algorithm', [
 
 start = st.button('Start Trading Simulation')
 if start:
-    my_placeholder = st.empty()
+    placeholder.empty()
+    title_placeholder.empty()
     st.header("Top Ranked Stocks")
     if selected_algorithm == 'Quantitative Momentum':
         st.write(hqm_dataframe_results)
@@ -57,14 +53,16 @@ if start and selected_algorithm == 'Quantitative Momentum':
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss in $ (Ticks Every 5 seconds)")
+        st.write("Profit/Loss (Ticks Every 10 seconds)")
+    balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
             num_of_stocks, stock_bought, total_money_spent))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(1)
-        st.write(f"Current Balance: {new_rows}💲")
+        time.sleep(0.2)
+        balance_placeholder.empty()
+        balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
 elif start == False:
     st.info('Please choose trading algorithm')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
@@ -73,13 +71,15 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss in $ (Ticks Every 5 seconds)")
+        st.write("Profit/Loss (Ticks Every 10 seconds)")
+    balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
             num_of_stocks_value, stock_bought_value, total_money_spent_value))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(1)
-        st.write(f"Current Balance: {new_rows}💲")
+        time.sleep(0.2)
+        balance_placeholder.empty()
+        balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
 
 st.info('For more info on this app, see readme file at https://github.com/nirjacob/BotOfWallStreet')
