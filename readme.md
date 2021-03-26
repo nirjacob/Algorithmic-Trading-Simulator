@@ -17,10 +17,10 @@
 ## :desktop_computer:	 App GUI
  ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/none.jpg)
 
-- ## :bulb: Conclusions
-- ### As I firmly suspected, beating the market is extremly hard!
+## :bulb: Conclusions
+### As I firmly suspected, beating the market is extremly hard!
   ![😢:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/lose.jpg)
-- ### Nevertheless ill always remember the time I did
+### Nevertheless ill always remember the time I did
   ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/win.jpg)
 
  
