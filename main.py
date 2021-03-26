@@ -57,7 +57,7 @@ if start and selected_algorithm == 'Quantitative Momentum':
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
-            num_of_stocks, stock_bought, total_money_spent)) + 1200
+            num_of_stocks, stock_bought, total_money_spent))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
         time.sleep(0.5)
