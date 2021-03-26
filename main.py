@@ -11,18 +11,25 @@ import pandas as pd
 portfolio_size = 100000
 start = False
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
-if start == False:
-    st.header("Welcome to my trading algorithm simulation!")
-    st.subheader(
-        "There are two algorithm profiles - momentum and value based.")
-    st.subheader("The default portfolio size is set to 100,000$")
-    st.subheader("Enjoy!")
+
+title_placeholder = st.empty()
+title_placeholder.text("Welcome to my trading algorithm simulation!")
+placeholder = st.empty()
+placeholder.text(
+    "There are two algorithm profiles - momentum and value based.\nThe default portfolio size is set to 100,000$")
+
+
+if start == True:
+    placeholder.empty()
+    title_placeholder.empty()
+
 
 selected_algorithm = st.selectbox('Select Trading Algorithm', [
                                   'Quantitative Momentum', 'Quantitative Value'])
 
 start = st.button('Start Trading Simulation')
 if start:
+    my_placeholder = st.empty()
     st.header("Top Ranked Stocks")
     if selected_algorithm == 'Quantitative Momentum':
         st.write(hqm_dataframe_results)
@@ -57,6 +64,7 @@ if start and selected_algorithm == 'Quantitative Momentum':
         result_chart.add_rows(new_rows)
         prices_array = new_rows
         time.sleep(1)
+        st.write(f"Current Balance: {new_rows}💲")
 elif start == False:
     st.info('Please choose trading algorithm')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
@@ -72,3 +80,6 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
         result_chart.add_rows(new_rows)
         prices_array = new_rows
         time.sleep(1)
+        st.write(f"Current Balance: {new_rows}💲")
+
+st.info('For more info on this app, see readme file at https://github.com/nirjacob/BotOfWallStreet')
