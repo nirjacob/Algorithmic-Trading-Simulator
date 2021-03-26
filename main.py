@@ -53,14 +53,14 @@ if start and selected_algorithm == 'Quantitative Momentum':
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss (Ticks Every 10 seconds)")
+        st.write("Profit/Loss (Ticks Every 5 seconds)")
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
             num_of_stocks, stock_bought, total_money_spent))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(0.2)
+        time.sleep(0.5)
         balance_placeholder.empty()
         balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
 elif start == False:
@@ -71,14 +71,14 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
-        st.write("Profit/Loss (Ticks Every 10 seconds)")
+        st.write("Profit/Loss (Ticks Every 5 seconds)")
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
             num_of_stocks_value, stock_bought_value, total_money_spent_value))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
-        time.sleep(0.2)
+        time.sleep(0.5)
         balance_placeholder.empty()
         balance_placeholder.write(f"Previous tick Balance: {new_rows[i]}💲")
 
