@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import requests
 import math
-from scipy.stats import percentileofscore as score
+from scipy import stats
 
 stocks = pd.read_csv('/app/botofwallstreet/sp_500_stocks.csv')
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
@@ -92,7 +92,7 @@ metrics = {
 
 for row in rv_dataframe.index:
     for metric in metrics.keys():
-        rv_dataframe.loc[row, metrics[metric]] = score(
+        rv_dataframe.loc[row, metrics[metric]] = percentileofscore(
             rv_dataframe[metric], rv_dataframe.loc[row, metric])/100
 
 for row in rv_dataframe.index:

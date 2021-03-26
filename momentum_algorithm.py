@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import requests
 import math
-from scipy.stats import percentileofscore as score
+from scipy import stats
 stocks = pd.read_csv('/app/botofwallstreet/sp_500_stocks.csv')
 IEX_CLOUD_API_TOKEN = 'Tpk_059b97af715d417d9f49f50b51b1c448'
 portfolio_size = 100000
@@ -74,7 +74,7 @@ for row in hqm_dataframe.index:
     for time_period in time_periods:
         change_col = f'{time_period} Price Return'
         percentile_col = f'{time_period} Return Percentile'
-        hqm_dataframe.loc[row, percentile_col] = score(
+        hqm_dataframe.loc[row, percentile_col] = percentileofscore(
             hqm_dataframe[change_col], hqm_dataframe.loc[row, change_col])
 
 for row in hqm_dataframe.index:
