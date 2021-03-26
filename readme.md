@@ -14,12 +14,14 @@
 - ### :globe_with_meridians: Technicals
   - Written in Python, using streamlit as module and host 
   - API calls from IEX Cloud, using the free tier (am a student), information is simulated to behave similar to the market, API calls can be adjusted to paid version by inserting paid token.
+## :desktop_computer:	 App GUI
+ ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/none.jpg)
 
-- # Conclusions
-  - ## After researching for this project, as I suspected, beating the market is extremly hard!
-  - ![:cry:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/lose.jpg)
-  - ## Nevertheless ill always remember the time I did
-  - ![:happy:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/win.jpg)
+- ## :bulb: Conclusions
+- ### After researching for this project, as I suspected, beating the market is extremly hard!
+  ![😢:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/lose.jpg)
+- ### Nevertheless ill always remember the time I did
+  ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/win.jpg)
 
  
  
