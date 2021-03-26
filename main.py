@@ -32,11 +32,10 @@ if start:
     else:
         st.write(rv_dataframe_results)
 
+global flag = False
 
-flag = False
 
-
-def updated_results(shares_ammount, shares_bought, total_investment, flag):
+def updated_results(shares_ammount, shares_bought, total_investment):
     owned_stock_prices = 0
     latest_price = 0
     for i in range(0, 10):
@@ -44,7 +43,7 @@ def updated_results(shares_ammount, shares_bought, total_investment, flag):
         data = requests.get(api_url).json()
         latest_price = int(data['latestPrice'])
         owned_stock_prices += (latest_price * shares_ammount[i])
-    if (owned_stock_prices - total_investment) > 0 and flag == False:
+    if (owned_stock_prices - total_investment) > 0 and flag = False:
         st.balloons()
         st.success('Congratulation! You Have Beaten The Market!')
         flag = True
@@ -53,8 +52,7 @@ def updated_results(shares_ammount, shares_bought, total_investment, flag):
 
 st.header("Algorithm Real-Time Results")
 if start and selected_algorithm == 'Quantitative Momentum':
-    gains = updated_results(num_of_stocks, stock_bought,
-                            total_money_spent, flag)
+    gains = updated_results(num_of_stocks, stock_bought, total_money_spent)
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
@@ -62,7 +60,7 @@ if start and selected_algorithm == 'Quantitative Momentum':
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
-            num_of_stocks, stock_bought, total_money_spent, flag))
+            num_of_stocks, stock_bought, total_money_spent))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
         time.sleep(0.5)
@@ -72,7 +70,7 @@ elif start == False:
     st.info('Please choose trading algorithm and start the simulation')
 elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
     gains = updated_results(num_of_stocks_value,
-                            stock_bought_value, total_money_spent_value, flag)
+                            stock_bought_value, total_money_spent_value)
     prices_array = np.array([gains])
     with st.beta_container():
         result_chart = st.line_chart(prices_array)
@@ -80,7 +78,7 @@ elif start and portfolio_size and selected_algorithm == 'Quantitative Value':
     balance_placeholder = st.empty()
     for i in range(0, 30):
         new_rows = np.append(prices_array, updated_results(
-            num_of_stocks_value, stock_bought_value, total_money_spent_value, flag))
+            num_of_stocks_value, stock_bought_value, total_money_spent_value))
         result_chart.add_rows(new_rows)
         prices_array = new_rows
         time.sleep(0.5)
