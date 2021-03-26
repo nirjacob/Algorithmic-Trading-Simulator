@@ -7,7 +7,7 @@ stock_bought = []
 total_money_spent = 0
 num_of_stocks = []
 
-for i in range(0, 9):
+for i in range(0, 10):
     stock_bought.append(hqm_dataframe_results.loc[i, 'Ticker'])
     num_of_stocks.append(
         hqm_dataframe_results.loc[i, 'Number of Shares Bought'])
