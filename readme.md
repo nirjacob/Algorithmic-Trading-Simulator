@@ -16,12 +16,3 @@
   - API calls from IEX Cloud, using the free tier (am a student), information is simulated to behave similar to the market, API calls can be adjusted to paid version by inserting paid token.
 ## :desktop_computer:	 App GUI
  ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/none.jpg)
-
-## :bulb: Conclusions
-### As I firmly suspected, beating the market is extremly hard!
-  ![😢:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/lose.jpg)
-### Nevertheless ill always remember the time I did
-  ![😄:](https://github.com/nirjacob/BotOfWallStreet/blob/master/images/win.jpg)
-
- 
- 
