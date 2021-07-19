@@ -4,7 +4,7 @@
 ## Welcome to my trading algorithm simulator!
 ### :notebook: Strategies:
 - #### :electric_plug: Trading Frequency Strategy
-  - Calculate and excute trades every 2 seconds, way too slow for high frequency traders to notice, way to fast for day traders to keep up.
+  - Calculate and excute trades every 2 seconds, the idea is to be way too slow for high frequency traders to notice, while way to fast for day traders to keep up.
 - #### :chart_with_upwards_trend: Momentum Algorithm Strategy
   - Choosing high quality momentum(HQM) stocks by using API calls to get information about stock returns over the past year, six months, three month, and one month back, and evaluating its ranking by calculating the mean of those four and thus giving each stock HQM ranking between 0-100.
 
