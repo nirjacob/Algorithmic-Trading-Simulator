@@ -8,6 +8,9 @@
 - #### :chart_with_upwards_trend: Momentum Algorithm Strategy
   - Choosing high quality momentum(HQM) stocks by using API calls to get information about stock returns over the past year, six months, three month, and one month back, and evaluating its ranking by calculating the mean of those four and thus giving each stock HQM ranking between 0-100.
 
+
+!!!!!!!!!test!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 - #### :chart_with_upwards_trend: Value Algorithm Strategy
   - Choosing highly real valued (RV) stocks by using API calls to get information about price to earnings/book/sales-ratio in addition to enterprise multiple and enterprise value divided by gross profit, using this information to calculate mean of those and thus giving each stock rv ranking between 0-1.
 
